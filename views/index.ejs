@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>My Book Notes · Reading Journal</title><link rel="stylesheet" href="/styles.css"></head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><a class="brand" href="/">▤ Book Notes<span>.</span></a><span class="header-caption">A personal reading journal</span></header>
+<main id="main" class="journal">
+<section class="page-heading"><div><p class="eyebrow">Between the pages</p><h1>My reading journal<span>.</span></h1><p class="intro">Good books stay with you. Keep a little of each one here.</p></div><a class="button primary" href="/books">＋ Add Book</a></section>
+<section aria-labelledby="library-heading">
+<div class="library-toolbar"><h2 id="library-heading">The bookshelf <span class="count"><%= books.length %></span></h2><form class="sort-form" method="get" action="/"><label for="sort">Sort by</label><select name="sort" id="sort"><option value="title">Title</option><option value="rating">Rating</option><option value="date">Date finished</option></select><button class="button" type="submit">Sort</button></form></div>
+<div class="book-list">
+<% for (const book of books) { %>
+<article class="book-card">
+<div class="book-cover"><% if(book.cover_id) { %><img src="https://covers.openlibrary.org/b/id/<%= book.cover_id %>-M.jpg" alt="Cover of <%= book.title %>" loading="lazy"><% } else { %><div class="cover-placeholder"><span aria-hidden="true">▤</span><span><%= book.title %></span><small>Cover unavailable</small></div><% } %></div>
+<div class="book-details"><div class="book-heading"><div><h3><%= book.title %></h3><p class="book-author">by <%= book.author || 'Unknown author' %></p></div><span class="rating"><% if(book.rating != null) { %>★ <%= book.rating %><small> / 10</small><% } else { %>Not rated<% } %></span></div>
+<p class="book-notes"><%= book.notes || 'No notes yet. Add a thought, a favorite passage, or something to remember.' %></p>
+<div class="book-footer"><p class="finished-date"><% if(book.date_finished) { %>Finished <%= book.date_finished.toLocaleDateString("en-GB", {day:"numeric",month:"long",year:"numeric"}) %><% } else { %>No finish date<% } %></p><div class="book-actions"><a href="/books/<%= book.id %>/edit" aria-label="Edit <%= book.title %>">Edit notes ↗</a><form method="post" action="/books/<%= book.id %>/delete"><button class="delete-button" type="submit" aria-label="Delete <%= book.title %>">Delete</button></form></div></div></div>
+</article>
+<% } %>
+<% if (books.length === 0) { %><div class="empty-state"><span aria-hidden="true">▤</span><h3>A new chapter starts here.</h3><p>Add your first book and give your reading memories a home.</p><a class="button primary" href="/books">Add your first book</a></div><% } %>
+</div></section></main>
+<footer class="site-footer">A place for the books you read &amp; the thoughts they leave behind.</footer>
+<script>const selectedSort = new URLSearchParams(window.location.search).get('sort'); if (['title','rating','date'].includes(selectedSort)) document.getElementById('sort').value = selectedSort;</script>
+</body></html>
+

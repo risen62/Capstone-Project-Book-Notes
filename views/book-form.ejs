@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title><%= editing ? 'Edit Book' : 'Add Book' %> · Book Notes</title><link rel="stylesheet" href="/styles.css"></head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><a class="brand" href="/">▤ Book Notes<span>.</span></a><span class="header-caption">A personal reading journal</span></header>
+<main id="main" class="form-page">
+<a class="back-link" href="/">← Back to bookshelf</a>
+<div class="form-heading"><p class="eyebrow"><%= editing ? 'Return to the story' : 'Another book, another perspective' %></p><h1><%= editing ? 'Edit your book' : 'Add a book' %><span>.</span></h1><p class="intro">Save the details. Capture what stayed with you.</p></div>
+<form class="book-form" method="post" action="<%= editing ? '/books/' + id + '/edit' : '/books' %>">
+<div class="form-section-heading"><h2>The book</h2><p>Start with the essentials. * Required fields</p></div>
+<div class="field"><label for="book-title">Book title *</label><input type="text" id="book-title" placeholder="e.g. The Secret Garden" name="title" value="<%= editing ? book.title : '' %>" required></div>
+<div class="field"><label for="book-author">Author</label><input type="text" id="book-author" placeholder="e.g. Frances Hodgson Burnett" name="author" value="<%= editing ? book.author : '' %>"></div>
+<div class="field-row">
+<div class="field"><label for="number">Your rating <span class="optional">/ 10</span></label><input type="number" min="1" max="10" name="rating" id="number" step="0.1" placeholder="e.g. 8.5" value="<%= editing ? book.rating : '' %>" aria-describedby="rating-help"><small id="rating-help">Optional · A score from 1 to 10.</small></div>
+<div class="field"><label for="date">Date finished *</label><input type="date" name="date_finished" id="date" required value="<%= editing && book.date_finished ? [book.date_finished.getFullYear(), String(book.date_finished.getMonth() + 1).padStart(2, '0'), String(book.date_finished.getDate()).padStart(2, '0')].join('-') : '' %>"></div>
+</div>
+<div class="field notes-field"><label for="notes">Your notes</label><p class="field-hint" id="notes-help">Favorite passages, fresh perspectives, or a thought to return to.</p><textarea id="notes" name="notes" rows="7" placeholder="What will you remember about this book?" aria-describedby="notes-help"><%= editing ? book.notes : '' %></textarea></div>
+<div class="form-actions"><a class="button" href="/">Cancel</a><button class="button primary" type="submit"><%= editing ? 'Save Changes' : 'Add Book' %> ↗</button></div>
+</form></main>
+<footer class="site-footer">Every book has a story. So does your reading journey.</footer>
+</body></html>
